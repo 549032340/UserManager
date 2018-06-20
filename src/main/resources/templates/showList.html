@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.3.1.js" ></script>
+<script>
+	$(document).ready(function(){
+		$("#login").click(function(){
+			Login($("#uName").val());
+		})
+		function Login(uName){
+			$.ajax({
+				type:"post",
+				url:"login",
+				async:true,
+				data:{"uName":uName},
+				success:function(data){
+					var ts="";
+					if (data==null||data=="") {
+						alert("用户名不存在！")
+					} else{
+						$.each(data, function(i) {
+							ts+="<tr><td>"+data[i]+"</td></tr>";
+						});
+					}
+					$("#permissions").html(ts);
+				},
+				error:function(msg){
+					alert(msg.status)
+				}
+			});
+		}
+	})
+</script>
+</head>
+<style>
+	fieldset {
+		width: 200px;
+		height:200px ;
+		margin: auto;	
+	}
+</style>
+<body>
+<div>
+	<fieldset style="padding: 20px">
+		<legend>Hello</legend>
+		<ul>
+			<li><a th:href="@{'/showusers'}">显示用户列表</a></li>
+			<li><a th:href="@{'/showroles'}">显示角色列表</a></li>
+			<li><a th:href="@{'showpermissions'}">显示权限列表</a></li>
+		</ul>
+	</fieldset>
+</div>
+<div align="center">
+	<input type="text" id="uName" value=""/>
+	<input type="button" id="login" value="用户登陆"/>
+	<table id="permissions">
+		
+	</table>
+</div>
+</body>
+</html>

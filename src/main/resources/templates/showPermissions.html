@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.3.1.js" ></script>
+<script>
+	$(document).ready(function(){
+		showPermis();
+		function showPermis(){
+			$.ajax({
+				type:"post",
+				url:"/showpermissions",
+				async:true,
+				success:function(data){
+					var ts="";
+					$.each(data, function(i) {
+						ts+='<tr><td>'+data[i].pid+'</td><td>'+data[i].pname+
+						'</td><td><a href="JavaScript:void(0);" id="updatePermis" title="'
+						+data[i].pid+'">修改</a> <a href="deletepermission?pid='+data[i].pid+'">删除</a></td></tr>';
+					})
+					$("#tbs").html(ts);
+					
+				},
+				error:function(msg){
+						alert("error:"+msg.status);
+				}
+			});
+		}
+		$(document).on('click',"#updatePermis",function(){
+			UpdatePermis($(this).attr("title"));
+			
+		})
+		function UpdatePermis(id){
+			$.ajax({
+				type:"get",
+				url:"/updatepermission",
+				data:{"pid":id},
+				async:true,
+				success:function(data){
+					$("input[name='pId']").val(data[0].pid);
+					$("#pName").val(data[0].pname);
+					
+				},
+				error:function(msg){
+						alert("error:"+msg.status);
+				}
+			});
+		}
+		$("#update").click(function(){
+			if($("input[name='pName1']").val()==null){
+				$.ajax({
+				type:"post",
+				url:"updatepermission",
+				data:$("#updateform").serialize(),
+				async:true,
+				success:function(data){
+					alert("修改成功！")
+					$("#updateform")[0].reset();//重置表单
+					showPermis();
+				},
+				error:function(msg){
+					alert(" --- "+msg.status);
+					
+				}
+			});
+			}else{
+				alert("请完善信息！")
+			}
+			
+		});
+		
+	})
+	
+</script>
+</head>
+<style>
+	fieldset {
+	width:260px;
+	height:120px;
+	margin:auto;
+}
+</style>
+<body>
+	<a href="showlist">首页</a>
+	<div align="center" >
+		<table border="1">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>权限名称</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="tbs">
+			</tbody>
+		</table>
+	</div>
+	<h4>Add PermissionInfo-------</h4>
+	<fieldset>
+		<legend>新增</legend>
+		
+		<form  th:action="@{'/addpermission'}" method="post" style="margin-top: 20px">
+			<div align="center">
+				<table cellpadding = "7px">
+					<tr>
+						<td>权限名称:</td>
+						<td><input type="text" name="pName"/></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center" style="margin-top: 30px"><input type="submit" /></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	
+	</fieldset>
+	<h4>Add PermissionInfo-------</h4>
+	<fieldset>
+		<legend>修改</legend>
+		
+		<form  th:action="@{'/updatepermission'}" method="post" style="margin-top: 20px" id="updateform">
+			<div align="center">
+				<table cellpadding = "7px">
+					<tr><td><input type="text" name="pId" hidden="hidden"/></td></tr>
+					<tr>
+						<td>权限名称:</td>
+						<td><input type="text" id="pName" name="pName"/></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center" style="margin-top: 30px"><input type="button" id="update" value="修改" /></td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	
+	</fieldset>
+</body>
+</html>

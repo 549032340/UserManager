@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.3.1.js" ></script>
+<!--<script>
+	$(document).ready(function(){
+		$.ajax({
+			type:"post",
+			url:"addpermission",
+			data: JSON.stringify(dispatchesDTO),
+			async:true,
+			success: function(data){
+		    	if(!data.success){
+		          alertError("派工失败");
+		    	}else{
+			    alertSuccess("派工成功");
+				}
+		    }
+		});
+	})
+	
+</script>-->
+</head>
+<style>
+	fieldset {
+	width:260px;
+	height:250px;
+	margin: 100px auto;
+}
+</style>
+<body>
+	<fieldset>
+		<legend>新增</legend>
+		
+		<form  th:action="@{'/addpermission'}" method="post" style="margin-top: 20px">
+		<div align="center">
+			<table cellpadding = "7px">
+				<!-- <tr>
+					<td>ID:</td>
+					<td><input type="text" name="id"></input></td>
+				</tr> -->
+				<tr>
+					<td>权限名称:</td>
+					<td><input type="text" name="pName"/></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center" style="margin-top: 30px"><input type="submit" /></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+	
+	</fieldset>
+</body>
+</html>

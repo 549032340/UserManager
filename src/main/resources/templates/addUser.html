@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.3.1.js" ></script>
+<script>
+	$(document).ready(function(){
+		showRoles();
+		function showRoles(){
+			$.ajax({
+				type:"post",
+				url:"/showroles",
+				async:true,
+				success:function(data){
+					
+					var ts="";
+					$.each(data, function(i) {
+						ts+='<input type="checkbox" id="r'+data[i].rid+'" name="rolelist" value="'
+						+data[i].rid+'"/>'+data[i].rname	
+					})
+					$("#tdupdate").html(ts);
+					
+				},
+				error:function(msg){
+						alert("error:"+msg.status);
+				}
+			});
+		}
+	})
+</script>
+</head>
+<style>
+	fieldset {
+	width:300px;
+	height:200px;
+	margin: 100px auto;
+}
+</style>
+<body>
+	<a href="showlist">首页</a>
+	<fieldset>
+		<legend>新增</legend>
+		
+		<form  th:action="@{'/adduser'}" method="post" style="margin-top: 20px">
+		<div align="center">
+			<table cellpadding = "7px">
+				<!-- <tr>
+					<td>ID:</td>
+					<td><input type="text" name="id"></input></td>
+				</tr>  -->
+				<tr>
+					<td>用户名称:</td>
+					<td><input type="text" name="uName"/></td>	
+				</tr>
+			    <tr>
+					<td>用户角色:</td>
+					<td id="tdupdate">
+					</td>
+				</tr> 
+				<tr>
+					<td colspan="2" align="center" style="margin-top: 30px"><input type="submit" /></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+	
+	</fieldset>
+</body>
+</html>

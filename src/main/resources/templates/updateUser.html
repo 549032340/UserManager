@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.3.1.js" ></script>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			type:"get",
+			url:"updateuser",
+			async:true,
+			success:function(data){
+				$.each(data,function(i){
+					$("input[name='uId']").val()=data.user.uid;
+					$("input[name='uName']").val()=data.user.uName;
+					if (data.role.rid==1) {
+						$("#role1").attr('checked');
+					}else if(data.role.rid==2){
+						$("#role2").attr('checked');
+					}else if(data.role.rid==3){
+						$("#role3").attr('checked');
+					}
+				})
+				
+			},
+			error:function(msg){
+				alert(msg.status)
+			}
+		});
+	})
+</script>
+</head>
+<style>
+	fieldset {
+	width:260px;
+	height:240px;
+	margin: 100px auto;
+}
+</style>
+<body>
+	<a href="showlist">首页</a>
+	<fieldset>
+		<legend>修改用户</legend>
+		<form  action="updateuser}" method="post">
+			<table cellpadding = "7px">
+				<tr>
+					<td>ID:</td>
+					<td><input name="uId" value="" hidden="hidden"/>保密哟</td>
+				</tr>
+				<tr>	
+					<td>用户名称:</td>
+					<td><input name="uName" value=""/></td>
+				</tr>
+				<tr>
+					<td>用户角色:</td>
+					<td><input type="checkbox" id="role1" name="rolelist" value="1"/>吧友<input type="checkbox" id="role2" name="rolelist" value="2"/>楼主<input type="checkbox" id="role3" name="rolelist" value="3"/>管理大大</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center" style="margin-top: 30px"><input type="submit" /></td>
+				</tr>
+				
+			</table>
+		</form>
+	</fieldset>
+</body>
+</html>
